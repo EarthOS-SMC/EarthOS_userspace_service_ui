@@ -1,0 +1,49 @@
+// EarthOS user interface
+//
+//    Copyright (C) 2021  adazem009
+//
+// A command line login screen that starts the shell.
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//
+// User must be root
+if/[%whoami != "root"]
+	print/"Only root can start the UI.",\n
+	exit
+endif
+// Get release
+getfile/"/etc/release"/"file"
+getitem/"file",1/"uname"
+getitem/"file",2/"ver"
+// Get hostname
+getfile/"/etc/hostname"/"file"
+getitem/"file",1/"hostname"
+// Wait (so init doesn't print anything there)
+wait/2
+// Login screen
+while/[true]
+	clear
+	print/\b1,uname," ",ver,\b0,\n,\n
+	// Ask for username
+	print/hostname," login: "
+	read/"","logname"
+	print/logname,\n
+	// Ask for password
+	// (not supported yet)
+	print/"(passwords are not supported right now)",\n,\n
+	// Start shell
+	getfile/"/bin/shell"/"file"
+	listtobin/"file"/"sh"
+	run/sh,"wait",logname
+endloop
