@@ -38,7 +38,6 @@ while/[true]
 	// Ask for username
 	print/hostname," login: "
 	read/"","logname"
-	print/logname,\n
 	// Ask for password
 	// (not supported yet)
 	print/"(passwords are not supported right now)",\n,\n
