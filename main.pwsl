@@ -42,7 +42,14 @@ while/[true]
 	// (not supported yet)
 	print/"(passwords are not supported right now)",\n,\n
 	// Start shell
-	getfile/"/bin/shell"/"file"
-	listtobin/"file"/"sh"
-	run/sh,"wait",logname
+	ftest/"/bin/shell","rx","f"/"test"
+	set/"ret",%returnc
+	if/[ret != ""]
+		geterror/ret,0/"ret"
+		print/"Failed to execute /bin/shell: ",ret,\n
+	else
+		getfile/"/bin/shell"/"file"
+		listtobin/"file"/"sh"
+		run/sh,"wait",logname
+	endif
 endloop
